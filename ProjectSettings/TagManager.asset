@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 3
   tags:
   - Ground
+  - ScoreRewarder
+  - Death
+  - CheckPoint
   layers:
   - Default
   - TransparentFX

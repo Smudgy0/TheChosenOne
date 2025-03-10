@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.VFX;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -11,9 +13,14 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public Collider2D isGrounded;
 
+    public Transform PlayerPos;
+    public Transform RespawnPos;
+
     private Rigidbody2D PlayerRigidbody;
 
     private Vector2 movementDirection;
+
+    public int PlayerScore = 0;
 
     private void Awake()
     {
@@ -46,5 +53,37 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerRigidbody.linearVelocity = new Vector2(movementDirection.x * RunSpeed * Time.deltaTime, PlayerRigidbody.linearVelocityY);
         isGrounded = Physics2D.OverlapCircle(groundCheckObject.position, groundCheckRadius, groundMask);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.tag == "ScoreRewarder")
+        {
+            Destroy(collision.gameObject);
+            PlayerScore = PlayerScore + 1;
+        }
+
+        if (collision.tag == "Death")
+        {
+            Respawn();
+        }
+
+        if (collision.tag == "CheckPoint")
+        {
+            RespawnPos.position = collision.transform.position;
+        }
+    }
+
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.tag == "Death")
+        {
+            Respawn();
+        }
+    }
+
+    void Respawn()
+    {
+        PlayerPos.position = RespawnPos.position;
     }
 }
