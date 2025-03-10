@@ -8,6 +8,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float RunSpeed = 5.5f;
     [SerializeField] float JumpHeight = 1.5f;
 
+    bool EnviroPushbackBool = false;
+    public float gravityScaleMod = 0.3f;
+
     public float groundCheckRadius;
     public Transform groundCheckObject;
     public LayerMask groundMask;
@@ -24,9 +27,38 @@ public class PlayerMovement : MonoBehaviour
 
     public int PlayerScore = 0;
 
+    public SpriteRenderer sr;
+
     private void Awake()
     {
         PlayerRigidbody = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+    }
+
+    void Update()
+    {
+
+        if (movementDirection.x > 0) // flips the player sprite to be facing right if the X velocity of the player is positive
+        {
+            sr.flipX = true;
+        }
+        else if (movementDirection.x < 0) // flips the player sprite to be facing left if the X velocity of the player is negative
+        {
+            sr.flipX = false;
+        }
+
+        if(PlayerRigidbody.linearVelocityY < 0 && movementDirection.y != 0)
+        {
+            PlayerRigidbody.gravityScale = gravityScaleMod;
+        }
+        else if (movementDirection.y < 0)
+        {
+            PlayerRigidbody.gravityScale = 1.2f;
+        }
+        else
+        {
+            PlayerRigidbody.gravityScale = 1;
+        }
     }
 
     public void OnMove(InputAction.CallbackContext value)
@@ -61,6 +93,11 @@ public class PlayerMovement : MonoBehaviour
 
         PlayerRigidbody.linearVelocity = new Vector2(movementDirection.x * RunSpeed * Time.deltaTime, PlayerRigidbody.linearVelocityY);
         isGrounded = Physics2D.OverlapCircle(groundCheckObject.position, groundCheckRadius, groundMask);
+    }
+
+    void PushBack()
+    {
+        EnviroPushbackBool = true;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)

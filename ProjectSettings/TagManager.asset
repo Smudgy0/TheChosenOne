@@ -9,6 +9,7 @@ TagManager:
   - Death
   - CheckPoint
   - Damage
+  - Enviroment(PushBack)
   layers:
   - Default
   - TransparentFX
