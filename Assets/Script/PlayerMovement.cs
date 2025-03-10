@@ -13,6 +13,8 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public Collider2D isGrounded;
 
+    public int HP = 3;
+
     public Transform PlayerPos;
     public Transform RespawnPos;
 
@@ -51,6 +53,12 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+
+        if(HP == 0)
+        {
+            Respawn();
+        }
+
         PlayerRigidbody.linearVelocity = new Vector2(movementDirection.x * RunSpeed * Time.deltaTime, PlayerRigidbody.linearVelocityY);
         isGrounded = Physics2D.OverlapCircle(groundCheckObject.position, groundCheckRadius, groundMask);
     }
@@ -76,14 +84,21 @@ public class PlayerMovement : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.gameObject.tag == "Death")
+        if (collision.gameObject.tag == "Damage")
         {
-            Respawn();
+            HP = HP - 1;
+        }
+
+        if (collision.gameObject.tag == "ScoreRewarder")
+        {
+            Destroy(collision.gameObject);
+            PlayerScore = PlayerScore + 1;
         }
     }
 
     void Respawn()
     {
         PlayerPos.position = RespawnPos.position;
+        HP = 3;
     }
 }

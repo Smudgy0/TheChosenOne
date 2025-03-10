@@ -8,6 +8,7 @@ TagManager:
   - ScoreRewarder
   - Death
   - CheckPoint
+  - Damage
   layers:
   - Default
   - TransparentFX
