@@ -8,6 +8,11 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float RunSpeed = 5.5f;
     [SerializeField] float JumpHeight = 1.5f;
 
+    public UIManager UIM;
+
+    bool canShop = false;
+    bool shopOpen = false;
+
     bool EnviroPushbackBool = false;
     bool GlideActive = false;
     public float MaxGlideDuration = 2000;
@@ -77,6 +82,20 @@ public class PlayerMovement : MonoBehaviour
         AS.Play();
     }
 
+    public void OnShop(InputAction.CallbackContext value)
+    {
+        if (shopOpen == true)
+        {
+            UIM.ShopClose();
+            shopOpen = false;
+        }
+        else if (canShop == true && shopOpen == false)
+        {
+            shopOpen = true;
+            UIM.ShopOpen();
+        }
+    }
+
     public void OnGlideTrigger(InputAction.CallbackContext value)
     {
         if (GlideActive == false)
@@ -143,6 +162,19 @@ public class PlayerMovement : MonoBehaviour
         if (collision.tag == "CheckPoint")
         {
             RespawnPos.position = collision.transform.position;
+        }
+
+        if (collision.tag == "Shop")
+        {
+            canShop = true;
+        }
+    }
+
+    void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.tag == "Shop")
+        {
+            canShop = false;
         }
     }
 

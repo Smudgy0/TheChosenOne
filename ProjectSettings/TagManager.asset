@@ -10,6 +10,7 @@ TagManager:
   - CheckPoint
   - Damage
   - Enviroment(PushBack)
+  - Shop
   layers:
   - Default
   - TransparentFX
