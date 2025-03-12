@@ -9,6 +9,9 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float JumpHeight = 1.5f;
 
     bool EnviroPushbackBool = false;
+    bool GlideActive = false;
+    public float MaxGlideDuration = 2000;
+    public float GlideDuration = 2000;
     public float gravityScaleMod = 0.3f;
 
     public float groundCheckRadius;
@@ -16,7 +19,10 @@ public class PlayerMovement : MonoBehaviour
     public LayerMask groundMask;
     public Collider2D isGrounded;
 
+    public AudioSource AS;
+
     public int HP = 3;
+    public int MaxHP = 3;
 
     public Transform PlayerPos;
     public Transform RespawnPos;
@@ -33,6 +39,7 @@ public class PlayerMovement : MonoBehaviour
     {
         PlayerRigidbody = GetComponent<Rigidbody2D>();
         sr = GetComponent<SpriteRenderer>();
+        AS = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -47,23 +54,39 @@ public class PlayerMovement : MonoBehaviour
             sr.flipX = false;
         }
 
-        if(PlayerRigidbody.linearVelocityY < 0 && movementDirection.y != 0)
+        if(PlayerRigidbody.linearVelocityY < 0 && GlideActive == true && GlideDuration > 0)
         {
             PlayerRigidbody.gravityScale = gravityScaleMod;
-        }
-        else if (movementDirection.y < 0)
-        {
-            PlayerRigidbody.gravityScale = 1.2f;
+            GlideDuration = GlideDuration - 0.5f;
         }
         else
         {
             PlayerRigidbody.gravityScale = 1;
         }
+
+
     }
 
     public void OnMove(InputAction.CallbackContext value)
     {
         movementDirection = value.ReadValue<Vector2>();
+    }
+
+    public void OnHonk(InputAction.CallbackContext value)
+    {
+        AS.Play();
+    }
+
+    public void OnGlideTrigger(InputAction.CallbackContext value)
+    {
+        if (GlideActive == false)
+        {
+            GlideActive = true;
+        }
+        else
+        {
+            GlideActive = false;
+        }
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -85,6 +108,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void FixedUpdate()
     {
+        if (GlideDuration < MaxGlideDuration && GlideActive == false)
+        {
+            GlideDuration = GlideDuration + 1;
+        }
 
         if(HP == 0)
         {
@@ -136,6 +163,6 @@ public class PlayerMovement : MonoBehaviour
     void Respawn()
     {
         PlayerPos.position = RespawnPos.position;
-        HP = 3;
+        HP = MaxHP;
     }
 }
