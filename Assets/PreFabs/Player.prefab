@@ -112,7 +112,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 5
   m_Sprite: {fileID: -199876445757598851, guid: 39450fd1871f6b049806bc4d92016ed3, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 1
@@ -138,6 +138,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RunSpeed: 350
   JumpHeight: 10
+  UIM: {fileID: 0}
   MaxGlideDuration: 2000
   GlideDuration: 2000
   gravityScaleMod: 0.05
@@ -149,6 +150,7 @@ MonoBehaviour:
   isGrounded: {fileID: 0}
   AS: {fileID: 0}
   HP: 3
+  MaxHP: 3
   PlayerPos: {fileID: 3203848502914766717}
   RespawnPos: {fileID: 0}
   PlayerScore: 0
@@ -187,8 +189,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: -0.009272766, y: 0}
-  m_Size: {x: 0.2422638, y: 0.4}
+  m_Offset: {x: 0.016109157, y: 0.013576413}
+  m_Size: {x: 0.2930278, y: 0.3728473}
   m_Direction: 0
 --- !u!50 &916597065975197270
 Rigidbody2D:
@@ -346,6 +348,10 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 5264ac63-f4ee-4f7c-a996-eb07335dd939
     m_ActionName: 'Player/Honk[/Keyboard/h]'
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 97166438-ce05-4131-b7d5-70d489b757df
+    m_ActionName: 'Player/Shop[/Keyboard/q]'
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: Keyboard&Mouse
   m_DefaultActionMap: Player
