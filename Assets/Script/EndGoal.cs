@@ -8,7 +8,18 @@ public class EndGoal : MonoBehaviour
     {
         if (collision.tag == "Player")
         {
-            SceneManager.LoadScene(1);
+            int levelToUnlock = SceneManager.GetActiveScene().buildIndex - 1;
+            if (SceneManager.GetActiveScene().buildIndex < SceneManager.sceneCount)
+            {
+                PlayerPrefs.SetInt($"Level {levelToUnlock}", 1);
+                PlayerPrefs.Save();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+            }
+            else
+            {
+                SceneManager.LoadScene(0);
+            }
+
         }
     }
 }
